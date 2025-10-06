@@ -17,4 +17,4 @@ COPY ./app /app/app
 EXPOSE 8000
 
 # 7. Defina o comando para iniciar a aplicação quando o contêiner rodar
-CMD ["gunicorn", "agendamentos.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "agendamentos.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
