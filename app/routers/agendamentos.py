@@ -4,7 +4,7 @@ from beanie import PydanticObjectId  # ID especial do Beanie
 from datetime import datetime
 
 from ..models.agendamento import Agendamento, UpdateAgendamento
-from ..services.email import send_agendamento_confirmation
+from ..services.email import send_email
 
 router = APIRouter(
     prefix="/agendamentos",
@@ -20,7 +20,7 @@ async def criar_agendamento(agendamento: Agendamento, background_tasks: Backgrou
     formatted_date = agendamento.agendamento_date.astimezone(None).strftime("%d/%m/%Y às %H:%M:%S")
 
     background_tasks.add_task(
-        send_agendamento_confirmation, 
+        send_email, 
         agendamento.client_email, 
         agendamento.client_name,  
         formatted_date            
