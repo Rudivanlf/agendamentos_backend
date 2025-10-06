@@ -17,4 +17,4 @@ COPY ./app /app/app
 EXPOSE 8000
 
 # 7. Defina o comando para iniciar a aplicação quando o contêiner rodar
-CMD ["python", "-m", "gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["/bin/bash", "-c", "python -m gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --host 0.0.0.0 --port 8000"]
