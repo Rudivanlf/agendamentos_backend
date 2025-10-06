@@ -1,10 +1,13 @@
 from fastapi import APIRouter, HTTPException, status, BackgroundTasks
 from typing import List
-from beanie import PydanticObjectId  # ID especial do Beanie
+from beanie import PydanticObjectId
 from datetime import datetime
 
+# Modelos
 from ..models.agendamento import Agendamento, UpdateAgendamento
-from ..services.email import send_email_confirmation
+
+# A IMPORTAÇÃO CORRETA E FINAL
+from ..services.email import send_appointment_confirmation
 
 router = APIRouter(
     prefix="/agendamentos",
@@ -16,14 +19,15 @@ router = APIRouter(
 async def criar_agendamento(agendamento: Agendamento, background_tasks: BackgroundTasks):
     await agendamento.create()
 
-    # 1. Formata a data para ser legível no email
-    formatted_date = agendamento.agendamento_date.astimezone(None).strftime("%d/%m/%Y às %H:%M:%S")
+    # Formata a data para ser legível no email
+    formatted_date = agendamento.agendamento_date.astimezone(None).strftime("%d/%m/%Y às %H:%M")
 
+    # A CHAMADA DA FUNÇÃO CORRETA E FINAL
     background_tasks.add_task(
-        send_email_confirmation, 
+        send_appointment_confirmation, 
         agendamento.client_email, 
         agendamento.client_name,  
-        formatted_date            
+        formatted_date          
     )
 
     return agendamento
@@ -52,6 +56,7 @@ async def atualizar_agendamento(id: PydanticObjectId, update_data: UpdateAgendam
 
     update = update_data.model_dump(exclude_unset=True)
     await agendamento.update({"$set": update})
+    # Beanie V2.0+ retorna o documento atualizado
     return await Agendamento.get(id)
 
 
@@ -63,3 +68,4 @@ async def deletar_agendamento(id: PydanticObjectId):
             status_code=404, detail="Agendamento não encontrado")
 
     await agendamento.delete()
+    return None
