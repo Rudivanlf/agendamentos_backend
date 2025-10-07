@@ -1,4 +1,6 @@
+from typing import List
 from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     MONGO_URL: str
@@ -7,7 +9,11 @@ class Settings(BaseSettings):
     SMTP_PORT: int
     SMTP_SENDER_EMAIL: str
     SMTP_PASSWORD: str
+
+    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
+
     class Config:
         env_file = ".env"
+
 
 settings = Settings()
