@@ -20,15 +20,16 @@ async def criar_agendamento(agendamento: Agendamento, background_tasks: Backgrou
     await agendamento.create()
 
     # Formata a data para ser legível no email
-    formatted_date = agendamento.agendamento_date.astimezone(None).strftime("%d/%m/%Y às %H:%M")
+    formatted_date = agendamento.agendamento_date.astimezone(
+        None).strftime("%d/%m/%Y às %H:%M")
 
-    # A CHAMADA DA FUNÇÃO CORRETA E FINAL
+    # CORRIGIDO: description em vez de descricao
     background_tasks.add_task(
-        send_appointment_confirmation, 
-        agendamento.client_email, 
-        agendamento.client_name,  
-        formatted_date,          
-        agendamento.descricao
+        send_appointment_confirmation,
+        agendamento.client_email,
+        agendamento.client_name,
+        formatted_date,
+        agendamento.description  # <-- CORRIGIDO AQUI
     )
 
     return agendamento
