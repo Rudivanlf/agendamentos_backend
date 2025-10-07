@@ -10,8 +10,6 @@ class Settings(BaseSettings):
     SMTP_SENDER_EMAIL: str
     SMTP_PASSWORD: str
 
-    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
-
     class Config:
         env_file = ".env"
 
