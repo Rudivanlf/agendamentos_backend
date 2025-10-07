@@ -16,5 +16,7 @@ COPY ./app /app/app
 # 6. Exponha a porta que o Uvicorn vai usar
 EXPOSE 8000
 
+ENV PYTHONUNBUFFERED=1
+
 # 7. Defina o comando para iniciar a aplicação quando o contêiner rodar
 CMD ["gunicorn", "app.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
