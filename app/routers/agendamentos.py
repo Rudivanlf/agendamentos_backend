@@ -27,7 +27,8 @@ async def criar_agendamento(agendamento: Agendamento, background_tasks: Backgrou
         send_appointment_confirmation, 
         agendamento.client_email, 
         agendamento.client_name,  
-        formatted_date          
+        formatted_date,          
+        agendamento.descricao
     )
 
     return agendamento
